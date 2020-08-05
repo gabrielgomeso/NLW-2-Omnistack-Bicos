@@ -56,7 +56,7 @@
     display: block;
 }
 
-.worker-item footer button {
+.worker-item footer a {
     width: 20rem;
     height: 5.6rem;
     background: var(--color-secundary);
@@ -69,6 +69,7 @@
     align-items: center;
     justify-content: space-evenly;
     transition: 0.2s;
+    text-decoration: none;
 }
 
 .worker-item footer button:hover{
@@ -94,6 +95,10 @@
         width: 24.5rem;
         font-size: 1.6rem;
         justify-content: center;
+    }
+
+    .worker-item footer a img {
+        margin-right: 1.2rem;
     }
 
 }

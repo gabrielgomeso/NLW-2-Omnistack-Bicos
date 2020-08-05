@@ -1,37 +1,60 @@
 import React from 'react';
 
+import api from '../../services/api';
 import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
 
 import './styles.css';
 
-function WorkerItem(){
+
+export interface Worker {
+    id: number;
+    avatar: string;
+    bio: string;
+    cost: number;
+    name: string;
+    subject: string
+    whatsapp: string;
+}
+
+interface WorkerItemProps {
+    worker: Worker;
+}
+
+const WorkerItem: React.FC<WorkerItemProps> = ({ worker }) => {
+    function createNewConnection(){
+        api.post('connections', {
+            user_id: worker.id, 
+        })
+    }
+
     return (
         <article className="worker-item">
-        <header>
-            <img src="https://avatars3.githubusercontent.com/u/17833683?s=460&u=1b95ad233192dcc057d416c0222fb48760c0aca1&v=4" alt="Gabriel Gomes" />
-            <div>
-                <strong>Gabriel Gomes</strong>
-                <span>Encanador</span>
-            </div>
-        </header>
+            <header>
+                <img src={worker.avatar} alt={worker.name} />
+                <div>
+                    <strong>{worker.name}</strong>
+                    <span>{worker.subject}</span>
+                </div>
+            </header>
 
-        <p>
-            Meu nome é Gabriel e para juntar uma grana e comprar um notebook aprendi a arrumar as coisas de casa.
-            <br />
-            Sei trocar encanamentos, concertar pias e registros e faço tudo isso no precinho justo. Me manda uma mensagem e fazemos um orçamento!
-        </p>
+            <p> {worker.bio} </p>
 
-        <footer>
-            <p>
-                Preço/hora
-                <strong>R$35,00</strong>
-            </p>
-            <button type="button">
-                <img src={whatsappIcon} alt="Entrar em contato por Whatsapp" />
+            <footer>
+                <p>
+                    Preço/hora
+                <strong>R$ {worker.cost}</strong>
+                </p>
+                <a 
+                    target="_blank" 
+                    onClick={createNewConnection} 
+                    href={`https://wa.me/${worker.whatsapp}`} 
+                    type="button"
+                >
+                    <img src={whatsappIcon} alt="Entrar em contato por Whatsapp" />
                 Entrar em contato
-            </button>
-        </footer>
-    </article>
+            </a>
+            </footer>
+        </article>
     )
 }
 
