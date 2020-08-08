@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import styles from './styles';
 import PageHeader from '../../components/PageHeader';
 import { ScrollView } from 'react-native-gesture-handler';
-import WorkerItem from '../../components/WorkerItem';
+import WorkerItem, { Worker } from '../../components/WorkerItem';
+import AsyncStorage from '@react-native-community/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 function Favorites() {
+    const [favorites, setFavorites] = useState([]);
+    
+    function loadFavorites() {
+        AsyncStorage.getItem('favorites').then(response => {
+            if (response) {
+                const favoritedWorkers = JSON.parse(response);
+
+                setFavorites(favoritedWorkers);
+            }
+        });
+    }
+    useFocusEffect(
+        React.useCallback(() => {
+          loadFavorites();
+        }, [])
+      )
     return (
         <View style={styles.container} >
             <PageHeader title="Minhas pessoas favoritas" />
@@ -17,12 +35,18 @@ function Favorites() {
                     paddingBottom: 16,
                 }}
             >
-                <WorkerItem />
-                <WorkerItem />
-                <WorkerItem />
-                <WorkerItem />
-                <WorkerItem />
-                <WorkerItem />
+
+                {favorites.map((worker: Worker) => {
+                    return (
+                        <WorkerItem 
+                            key={worker.id}
+                            worker={worker}
+                            favorited
+                        />
+                    )
+                })}
+                
+
             </ScrollView>
         </View>
     )

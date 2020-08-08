@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     },
 
     workerList: {
-        marginTop: -60,
+        marginTop: -40,
     }
 })
 
